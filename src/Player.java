@@ -61,4 +61,11 @@ public abstract class Player {
         this.number_of_unflippedable = initial_number_of_unflippedable;
     }
 
+    public void increas_bomb() {
+        number_of_bombs++;
+    }
+    public void increas_unflippedable() {
+        number_of_unflippedable++;
+    }
+
 }
