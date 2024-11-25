@@ -4,7 +4,7 @@
 
  The class GameLogic introduces the logic of the game board of the Reversi game.
  it manages the board,the moves,the turns of the players,the types of the special discs
- (like BombDisc and UnflippableDisc),and the end of the game.
+ (like BombDisc and UnflippableDisc),and the end of the game....
  */
 
 import java.util.*;
