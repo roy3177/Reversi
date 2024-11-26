@@ -48,31 +48,13 @@ public class Position {
         return col;
     }
 
-    //set a new row for the position
-    public void setRow(int row){
-        this.row = row;
-    }
-    //set a new colum for the position
-    public void setCol(int col){
-        this.col = col;
-    }
-
-    //check if a new position is a valid
-    public boolean isValid(int row, int col){
-        return row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE;
-    }
 
     //Checks if two positions are the same
-    public boolean equals(Position a, Position b){
-        if (a.getRow() == b.getRow() && a.getCol() == b.getCol()){
-            return true;
+    public boolean equals(Object o){
+        if (o instanceof Position b){
+            return row()==b.row && col()==b.col;
         }
         return false;
-    }
-
-    //A function that returns the adjacent position in a certain selected direction
-    public Position getAdjacentPosition(int rowChange, int colChange) {
-        return new Position(row + rowChange, col + colChange);
     }
 
 
