@@ -1,12 +1,11 @@
-/**
- @author Roy Meoded
- @author Noa Agassi
-This class represents an AI player that acts in a completely random way.
-In each turn,the player randomly selects a legal move from a list of all
-possible moves.
- */
+/**@author Roy Meoded
+  @author Noa Agassi
+  This class represents an AI player that acts in a completely random way.
+  In each turn,the player randomly selects a legal move from a list of all
+  possible moves.
+  */
 
-import java.util.List;
+        import java.util.List;
 import java.util.Random;
 
 public class RandomAI extends AIPlayer {
@@ -27,17 +26,25 @@ public class RandomAI extends AIPlayer {
         if (ValidMoves.isEmpty()) {
             return null;
         }
+
+        Disc newDisc;
+        Random random = new Random();
         //Selects a random position from the list:
         Position chosenPos = ValidMoves.get(new Random().nextInt(ValidMoves.size()));
         //Checking who is the current player :
         Player currentPlayer = gameStatus.isFirstPlayerTurn() ? gameStatus.getFirstPlayer() : gameStatus.getSecondPlayer();
 
-        //Creates a new disc that introduce the current player:
-        Disc newDisc = new SimpleDisc(currentPlayer);
-
+        if (number_of_unflippedable >0 && random.nextBoolean()){
+            newDisc = new UnflippableDisc(currentPlayer);
+        }
+        else if (number_of_bombs >0 && random.nextBoolean()){
+            newDisc = new BombDisc(currentPlayer);
+        }
+        else {
+            //Creates a new disc that introduce the current player:
+            newDisc = new SimpleDisc(currentPlayer);
+        }
         //Return the move with the disc and position that we create:
         return new Move(chosenPos, newDisc);
     }
 }
-
-

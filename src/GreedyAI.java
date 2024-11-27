@@ -1,12 +1,12 @@
 /**
  @author Roy Meoded
  @author Noa Agassi
-This class represents a greedy AI player for our game.
-The greedy player will always choose the move that will lead to maximum flipping
-of the opponent's discs.
-If there are several moves that flip the same amount of discs:
-the player will choose the rightmost position,and if there are several:
-the lowest position.
+ This class represents a greedy AI player for our game.
+ The greedy player will always choose the move that will lead to maximum flipping
+ of the opponent's discs.
+ If there are several moves that flip the same amount of discs:
+ the player will choose the rightmost position,and if there are several:
+ the lowest position.
  */
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class GreedyAI extends AIPlayer{
 
     //Constructor-that indicate us if the player is p1 or p2:
     public GreedyAI (boolean isPlayerOne) {
-         super(isPlayerOne);
+        super(isPlayerOne);
     }
 
     /*
@@ -30,14 +30,16 @@ public class GreedyAI extends AIPlayer{
         if (ValidPosition.isEmpty()) {
             return null;
         }
-        //Indicate who is the current player: p1 or p2+create a new disc to the current player:
-        Player currentPlayer=gameStatus.isFirstPlayerTurn() ? gameStatus.getFirstPlayer(): gameStatus.getSecondPlayer();
-        Disc newDisc=new SimpleDisc(currentPlayer);
+
+//        //Indicate who is the current player: p1 or p2+create a new disc to the current player:
+//        Player currentPlayer = gameStatus.isFirstPlayerTurn() ? gameStatus.getFirstPlayer() : gameStatus.getSecondPlayer();
+//        Disc newDisc = new SimpleDisc(currentPlayer);
 
         //Find the best move:
 
-        Position bestPos=null;
-        int maxF=-1;
+        Position bestPos = null;
+        int maxF = -1;
+        boolean haveBombDisc = false;
 
         /*
         Goes through all legal moves and computes how many  opponent's discs
@@ -46,32 +48,30 @@ public class GreedyAI extends AIPlayer{
         If the number of the flips of the current position is greater than the
         previous value->update the maximum flips(maxF) and the best position(bestPos).
          */
-        for(Position pos : ValidPosition){
-            int flips= gameStatus.countFlips(pos);
+        for (Position pos : ValidPosition) {
+            int flips = gameStatus.countFlips(pos);
 
-            if(flips>maxF){
-                maxF=flips;
-                bestPos=pos;
+            if (flips > maxF) {
+                maxF = flips;
+                bestPos = pos;
             }
-            /*
-            If the number of the flips is equal to the maximum:
-            Checks which position is more to the right.
-            If there is equality in the column:
-            It checks the lowest row.
-             */
-            else if (flips==maxF && bestPos!=null) {
-                if(pos.col()>bestPos.col() || (pos.col()==bestPos.col())&& pos.row()>bestPos.row()){
-                    bestPos=pos;
-                }
+            if (gameStatus.countFlips(pos) > 3 && getNumber_of_bombs() > 0) {
+                haveBombDisc = true;
             }
         }
-        //Return the move that be chosen:
-        if(bestPos!=null){
-            return new Move(bestPos,newDisc);
+
+        Disc newDisc;
+        if (haveBombDisc){
+            newDisc = new BombDisc(this);
+        } else if (number_of_unflippedable>0) {
+            newDisc = new UnflippableDisc(this);
         }
-        else{
-            return null;
+        else {
+            newDisc = new SimpleDisc(this);
         }
+
+
+        return new Move(bestPos,newDisc);
     }
 
 }
